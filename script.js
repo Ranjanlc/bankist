@@ -30,7 +30,7 @@ const account1 = {
 };
 
 const account2 = {
-  owner: 'Jessica Davis',
+  owner: 'Ranjan Lamichhane',
   movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
   interestRate: 1.5,
   pin: 2222,
@@ -147,20 +147,20 @@ const calcDisplayBalance = function (acc) {
 
 const calcDisplaySummary = function (acc) {
   const incomes = acc.movements
-    .filter(mov => mov.toFixed(2) > 0)
+    .filter((mov) => mov.toFixed(2) > 0)
     .reduce((acc, mov) => acc + mov, 0)
     .toFixed(2);
   labelSumIn.textContent = formatCur(acc.locale, acc.currency, incomes);
 
   const out = acc.movements
-    .filter(mov => mov < 0)
+    .filter((mov) => mov < 0)
     .reduce((acc, mov) => acc + mov, 0)
     .toFixed(2);
   labelSumOut.textContent = formatCur(acc.locale, acc.currency, Math.abs(out));
 
   const interest = acc.movements
-    .filter(mov => mov > 0)
-    .map(deposit => (deposit * acc.interestRate) / 100)
+    .filter((mov) => mov > 0)
+    .map((deposit) => (deposit * acc.interestRate) / 100)
     .filter((int, i, arr) => {
       // console.log(arr);
       return int >= 1;
@@ -175,7 +175,7 @@ const createUsernames = function (accs) {
     acc.username = acc.owner
       .toLowerCase()
       .split(' ')
-      .map(name => name[0])
+      .map((name) => name[0])
       .join('');
   });
 };
@@ -223,7 +223,7 @@ btnLogin.addEventListener('click', function (e) {
   e.preventDefault();
   console.log(accounts);
   currentAccount = accounts.find(
-    acc => acc.username === inputLoginUsername.value
+    (acc) => acc.username === inputLoginUsername.value.trim()
   );
   console.log(currentAccount);
 
@@ -265,7 +265,7 @@ btnLogin.addEventListener('click', function (e) {
   }
 });
 
-btnLogout.addEventListener('click', e => {
+btnLogout.addEventListener('click', (e) => {
   e.preventDefault();
   clearInterval(timer);
   labelWelcome.textContent = 'Login to get Started';
@@ -281,7 +281,7 @@ btnTransfer.addEventListener('click', function (e) {
 
   const amount = +inputTransferAmount.value;
   const receiverAcc = accounts.find(
-    acc => acc.username === inputTransferTo.value
+    (acc) => acc.username === inputTransferTo.value
   );
   inputTransferAmount.value = inputTransferTo.value = '';
 
@@ -310,7 +310,10 @@ btnLoan.addEventListener('click', function (e) {
 
   const amount = Math.floor(inputLoanAmount.value);
 
-  if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
+  if (
+    amount > 0 &&
+    currentAccount.movements.some((mov) => mov >= amount * 0.1)
+  ) {
     setTimeout(function () {
       // Add movement
       currentAccount.movements.push(amount);
@@ -334,7 +337,7 @@ btnClose.addEventListener('click', function (e) {
     +inputClosePin.value === currentAccount.pin
   ) {
     const index = accounts.findIndex(
-      acc => acc.username === currentAccount.username
+      (acc) => acc.username === currentAccount.username
     );
     console.log(index);
     // .indexOf(23)
